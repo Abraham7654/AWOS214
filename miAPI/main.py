@@ -12,5 +12,6 @@ async def bienvenida():
 @app.get("/HolaMundo")
 async def hola():
     await asyncio.sleep(4)
-    return {"mensaje": "¡HolaMundo FastAPI"
-    "estatus":"200"}
+    return {
+        "mensaje": "¡Hola Mundo FastAPI"
+        "estatus": "200"}
