@@ -1,44 +1,73 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, status, HTTPException
 import asyncio
 from typing import Optional
 
 app = FastAPI(
-    title ='Mi primer API',
+    title='Mi primer API',
     description='Abraham Ordoñez Moreno',
-    version= '1.0.0'
+    version='1.0.0'
 )
 
-usuarios=[
-    {"id":1, "nombre":"Juan", "edad":21},
-    {"id":2, "nombre":"Israel", "edad":21},
-    {"id":3, "nombre":"Sofi", "edad":21},
+usuarios = [
+    {"id": 1, "nombre": "Juan", "edad": 21},
+    {"id": 2, "nombre": "Israel", "edad": 21},
+    {"id": 3, "nombre": "Sofi", "edad": 21},
 ]
 
-@app.get("/",tags=['Inicio'])
+
+@app.get("/", tags=['Inicio'])
 async def bienvenida():
     return {"mensaje": "¡Bienvenido a mi API!"}
 
 
-@app.get("/HolaMundo", tags=['Bienvanida Asincrona'])
+@app.get("/HolaMundo", tags=['Bienvenida Asincrona'])
 async def hola():
     await asyncio.sleep(3)
     return {
-        "mensaje": "¡Hola Mundo FastAPI",
+        "mensaje": "¡Hola Mundo FastAPI!",
         "estatus": "200"
-        }
+    }
 
 
-@app.get("/v1/usuario/{id}",tags=['Parametro Obligatorio'])
-async def consultaUno(id:int):
+@app.get("/v1/parametroOb/{id}", tags=['Parametro Obligatorio'])
+async def consultaUno(id: int):
     return {"Se encontro usuario": id}
 
 
-@app.get("/v1/usuario/",tags=['Parametro Opcional'])
-async def consultaTodos(id:Optional[int]=None):
+@app.get("/v1/ParametroOp/", tags=['Parametro Opcional'])
+async def consultaTodos(id: Optional[int] = None):
     if id is not None:
         for usuario in usuarios:
             if usuario["id"] == id:
-                return{"mensaje":"usuario encontrado", "usuario":usuario}
-        return{"mensaje":"usuario no encontrado", "usuario":id}
+                return {"mensaje": "usuario encontrado", "usuario": usuario}
+        return {"mensaje": "usuario no encontrado", "usuario": id}
     else:
-        return{"mensaje":"No se proporciono id" }
+        return {"mensaje": "No se proporciono id"}
+
+
+@app.get("/v1/Usuarios/", tags=['CRUD HTTP'])
+async def leer_usuarios():
+    return {
+        "status": "200",
+        "total": len(usuarios),
+        "usuarios": usuarios
+    }
+
+
+@app.post("/v1/usuarios/", tags=['CRUD HTTP'])
+async def crear_usuarios(usuario: dict):
+    for usr in usuarios:
+        if usr["id"] == usuario.get("id"):
+            raise HTTPException(
+                status_code=400,
+                detail="El id ya existe"
+            )
+
+    usuarios.append(usuario)
+
+    return {
+        "mensaje": "Usuario Agregado",
+        "Usuario": usuario
+    }
+@app.put("/v1/usuarios/{id}", tags=['CRUD HTTP'], 
+    )
