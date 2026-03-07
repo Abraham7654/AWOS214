@@ -11,14 +11,14 @@ app = FastAPI(
     version='1.0.0'
 )
 
-# Base de datos simulada
+
 usuarios = [
     {"id": 1, "nombre": "Juan", "edad": 21},
     {"id": 2, "nombre": "Israel", "edad": 21},
     {"id": 3, "nombre": "Sofi", "edad": 21},
 ]
 
-# MODELOS
+S
 class UsuarioCreate(BaseModel):
     id: int = Field(..., gt=0, description="Identificador de usuario")
     nombre: str = Field(..., min_length=1)
@@ -30,7 +30,7 @@ class UsuarioUpdate(BaseModel):
     edad: int = Field(..., gt=0)
 
 
-# SEGURIDAD
+
 security = HTTPBasic()
 
 def verificar_peticion(credenciales: HTTPBasicCredentials = Depends(security)):
@@ -47,7 +47,7 @@ def verificar_peticion(credenciales: HTTPBasicCredentials = Depends(security)):
     return credenciales.username
 
 
-# RUTAS
+
 @app.get("/", tags=['Inicio'])
 async def bienvenida():
     return {"mensaje": "¡Bienvenido a mi API!"}
