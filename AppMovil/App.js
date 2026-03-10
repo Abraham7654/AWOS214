@@ -22,7 +22,6 @@ export default function App() {
     }
   };
 
-  // Función para eliminar
   const eliminarCompañero = (id) => {
     setCompañeros(compañeros.filter(item => item.id !== id));
   };

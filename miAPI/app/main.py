@@ -18,7 +18,6 @@ usuarios = [
     {"id": 3, "nombre": "Sofi", "edad": 21},
 ]
 
-S
 class UsuarioCreate(BaseModel):
     id: int = Field(..., gt=0, description="Identificador de usuario")
     nombre: str = Field(..., min_length=1)
