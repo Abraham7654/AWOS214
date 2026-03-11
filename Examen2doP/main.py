@@ -1,7 +1,8 @@
-from fastapi import FastAPI, HTTPException, status
+from fastapi import FastAPI, HTTPException, status, Depends
 from pydantic import BaseModel, Field, EmailStr
 from typing import List
 from datetime import datetime
+
 
 app = FastAPI(
     title="API Sistema de Tickets de Soporte Técnico",
@@ -57,4 +58,18 @@ async def actualizar_ticket(id: int, ticket_actualizado: TicketUpdate, user: str
                 "mensaje": f"Ticket actualizado por {user}",
                 "usuario": usr
             }
+
+@app.delete("/v1/tickets/{id}", tags=['CRUD HTTP'], status_code=status.HTTP_200_OK)
+async def eliminar_ticket(id: int, user: str = Depends(validar_token)):
+    for usr in tickets:
+        if usr["id"] == id:
+            tickets.remove(usr)
+            return {
+                "message": f"Ticket eliminado por {user}"
+            }
+
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail="El ticket no existe, no se pudo eliminar"
+    )
 
