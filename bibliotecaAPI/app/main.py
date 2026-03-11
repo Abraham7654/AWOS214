@@ -99,3 +99,4 @@ def eliminar_prestamo(nombre: str):
             return {"mensaje": "Préstamo eliminado"}
 
     raise HTTPException(status_code=409, detail="El registro de préstamo ya no existe")
+    

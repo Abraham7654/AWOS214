@@ -148,4 +148,4 @@ async def eliminar_usuario(id: int, user: str = Depends(validar_token)):
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
         detail="El usuario no existe, no se pudo eliminar"
-    )
+    )    
