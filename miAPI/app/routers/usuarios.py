@@ -1,11 +1,11 @@
 from fastapi import status, HTTPException, Depends, APIRouter
-from app.models.usuario import usuario_create
+from app.models.usuario import UsuarioCreate, UsuarioUpdate
 from app.data.database import usuarios
 from app.security.auth import verificar_peticion
 
 
 router = APIRouter(
-    |prefix="/v1/usuarios", tags=['CRUD HTTP']
+    prefix="/v1/usuarios", tags=['CRUD HTTP']
 )
 
 @router.get("/")
