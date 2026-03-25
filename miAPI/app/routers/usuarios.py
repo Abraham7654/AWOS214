@@ -4,16 +4,23 @@ from app.data.database import usuarios
 from app.security.auth import verificar_peticion
 
 
+from sqlalchemy.orm import Session
+from app.data.db import get_db
+from app.data.usuario import Usuario as usuarioDB
+
 router = APIRouter(
     prefix="/v1/usuarios", tags=['CRUD HTTP']
 )
 
 @router.get("/")
-async def leer_usuarios():
+async def leer_usuarios(db:Session= Depends(get_db)):
+
+    queryUsers= db.query(usuarioDB).all()
+
     return {
         "status": "200",
-        "total": len(usuarios),
-        "usuarios": usuarios
+        "total": len(queryUsers),
+        "usuarios": queryUsers
     }
 
 
